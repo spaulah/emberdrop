@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest a capability or a change in behavior.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Emberdrop is early-stage, so a short discussion before any code is welcome. Please read the status table in the [README](https://github.com/spaulah/emberdrop#status) and the [decision records](https://github.com/spaulah/emberdrop/tree/main/docs/adr): some things are deliberately left out, with reasons.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do, and what gets in the way? Describe the situation before the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like
+      description: The behavior or API you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other ways to solve it, including ones the decision records rejected.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: This is not listed as out of scope in the README status table or the known limits.
+          required: true

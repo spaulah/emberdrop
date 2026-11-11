@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture.uses-conflict",
+  "version": "1.0.0",
+  "entryAssemblies": [ "Fixture.UsesConflict.dll" ],
+  "minAbstractionsVersion": "1.0.0",
+  "workUnits": [ { "name": "uses-conflict", "type": "Fixture.UsesConflict.UsesConflictWorkUnit", "requiredConfiguration": [ "Fixture:Key" ] } ]
+}

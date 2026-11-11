@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture.fragile",
+  "version": "1.0.0",
+  "entryAssemblies": [ "Fixture.Fragile.dll" ],
+  "minAbstractionsVersion": "1.0.0",
+  "workUnits": [ { "name": "ok", "type": "Fixture.Fragile.OkWorkUnit" } ]
+}

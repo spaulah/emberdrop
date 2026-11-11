@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="emberdrop.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/Emberdrop.Abstractions/Emberdrop.Abstractions.csproj" />
+    <ProjectReference Include="../Fixture.Contracts/Fixture.Contracts.csproj" />
+    <ProjectReference Include="../Fixture.Conflict.V2/Fixture.Conflict.V2.csproj" />
+  </ItemGroup>
+</Project>

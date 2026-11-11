@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Include>[Emberdrop.Server*]*,[Emberdrop.Core]*,[Emberdrop.Abstractions]*,[Emberdrop.Hangfire]*,[Emberdrop.InMemory]*,[Emberdrop.Storage.*]*</Include>
+          <Exclude>[Emberdrop.Server.Tests*]*</Exclude>
+          <Exclude>[*]*.Program</Exclude>
+          <Exclude>[*]*Migrations*</Exclude>
+          <ExcludeByFile>**/bin/**/*</ExcludeByFile>
+          <ExcludeByFile>**/obj/**/*</ExcludeByFile>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Fixture.Hello</AssemblyName>
+    <RootNamespace>Fixture.Hello</RootNamespace>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <DefineConstants>$(DefineConstants);V1</DefineConstants>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Fixture.Hello/HelloWorkUnit.cs" />
+    <None Include="emberdrop.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/Emberdrop.Abstractions/Emberdrop.Abstractions.csproj" />
+    <ProjectReference Include="../Fixture.Contracts/Fixture.Contracts.csproj" />
+  </ItemGroup>
+</Project>

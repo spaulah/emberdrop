@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.20" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Emberdrop.Core/Emberdrop.Core.csproj" />
+    <ProjectReference Include="../Emberdrop.Hangfire/Emberdrop.Hangfire.csproj" />
+    <ProjectReference Include="../Emberdrop.InMemory/Emberdrop.InMemory.csproj" />
+    <ProjectReference Include="../Emberdrop.Storage.Sqlite/Emberdrop.Storage.Sqlite.csproj" />
+    <ProjectReference Include="../Emberdrop.Storage.SqlServer/Emberdrop.Storage.SqlServer.csproj" />
+  </ItemGroup>
+
+</Project>

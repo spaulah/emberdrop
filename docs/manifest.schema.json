@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/emberdrop/emberdrop/docs/manifest.schema.json",
+  "title": "Emberdrop plugin manifest (emberdrop.json), schema version 1",
+  "description": "Describes a plugin package and the work units it provides. Properties not listed here are ignored by the host. Comments and trailing commas are accepted by the host's reader even though strict JSON does not allow them.",
+  "type": "object",
+  "required": [ "schemaVersion", "id", "version", "minAbstractionsVersion", "entryAssemblies", "workUnits" ],
+  "properties": {
+    "schemaVersion": {
+      "description": "The manifest format version. This host understands 1.",
+      "const": 1
+    },
+    "id": {
+      "description": "The plugin's id. Stable across versions.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"
+    },
+    "version": {
+      "description": "The plugin version: three numbers, with an optional pre-release label (for example 1.2.3 or 1.2.3-beta.1).",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
+    },
+    "description": {
+      "description": "A human-readable description of the package.",
+      "type": "string"
+    },
+    "minAbstractionsVersion": {
+      "description": "The oldest Emberdrop.Abstractions the plugin works with. The host rejects the package if it provides an older major or minor version.",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
+    },
+    "entryAssemblies": {
+      "description": "Package-relative paths (forward slashes) of the assemblies that contain the work units. Everything else in the package is a private dependency.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "\\.dll$" }
+    },
+    "startup": {
+      "description": "Optional full name of a class with a public parameterless constructor and a method 'void ConfigureServices(IServiceCollection services)', where the plugin registers the services its work units need.",
+      "type": "string"
+    },
+    "workUnits": {
+      "description": "The work units the package provides.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/workUnit" }
+    }
+  },
+  "$defs": {
+    "workUnit": {
+      "type": "object",
+      "required": [ "name", "type" ],
+      "properties": {
+        "name": {
+          "description": "The work unit's logical name, unique within the plugin. Stored work units refer to this, never to the class.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"
+        },
+        "type": {
+          "description": "Full name of the class that implements IWorkUnit.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "What sort of work unit this is. A string, not a fixed list: 'work-unit' unless stated. A host rejects a kind it has not been told to run.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,49}$",
+          "default": "work-unit"
+        },
+        "description": {
+          "description": "A human-readable description.",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "inputType": {
+          "description": "Full name of the input type. Optional; when given it must be the TInput of the class's WorkUnit<TInput, TOutput> base class. The host derives the input's JSON Schema from the class either way.",
+          "type": "string"
+        },
+        "outputType": {
+          "description": "Full name of the output type. Optional; when given it must be the TOutput of the class's WorkUnit<TInput, TOutput> base class.",
+          "type": "string"
+        },
+        "triggers": {
+          "description": "Default triggers. They travel with the plugin version; triggers an operator adds are stored separately and are never replaced by a plugin update.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/trigger" }
+        },
+        "requiredConfiguration": {
+          "description": "Configuration keys the work unit needs. The plugin sees only these keys of the host's configuration. A work unit whose keys are not set is registered but does not run.",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "capabilities": {
+          "description": "What the work unit says it needs. Validated, stored and shown by the API. Only 'service:<full type name>' entries are checked against the host's service allow-list; nothing else is enforced in v0.1 (see docs/concepts/capabilities.md).",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,199}$" }
+        },
+        "inputSchemaVersion": {
+          "description": "The schema version of the stored input the work unit understands. A stored work unit with a different version is refused, not guessed at.",
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      }
+    },
+    "trigger": {
+      "description": "A trigger. The kinds are the ones the host knows; v0.1 has manual and recurring for manifests (a one-off trigger is a single point in time, so it cannot be a shipped default).",
+      "type": "object",
+      "required": [ "kind" ],
+      "oneOf": [
+        {
+          "properties": { "kind": { "const": "manual" } },
+          "required": [ "kind" ]
+        },
+        {
+          "properties": {
+            "kind": { "const": "recurring" },
+            "cron": { "description": "A cron expression with 5 or 6 fields.", "type": "string" }
+          },
+          "required": [ "kind", "cron" ]
+        },
+        {
+          "description": "A kind added by the host (see docs/concepts/triggers.md).",
+          "properties": { "kind": { "type": "string", "not": { "enum": [ "manual", "recurring", "one-off" ] } } },
+          "required": [ "kind" ]
+        }
+      ]
+    }
+  }
+}

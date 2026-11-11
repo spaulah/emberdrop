@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/Emberdrop.Library.props" />
+
+  <!--
+    The plugin hosting core: packages, load contexts, lifecycle, draining, quarantine and diagnostics. It knows nothing about what a
+    plugin's exports are for (work units, triggers, schedulers, stores). tests/Emberdrop.Architecture.Tests keeps it that way.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Emberdrop.Abstractions/Emberdrop.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

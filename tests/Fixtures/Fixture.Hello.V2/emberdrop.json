@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture.hello",
+  "version": "2.0.0",
+  "entryAssemblies": [ "Fixture.Hello.dll" ],
+  "minAbstractionsVersion": "1.0.0",
+  "workUnits": [ { "name": "hello", "type": "Fixture.Hello.HelloWorkUnit" } ]
+}

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/Emberdrop.Library.props" />
+
+  <ItemGroup>
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="7.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.0" />
+    <!-- Microsoft.Data.SqlClient 6.1.0 depends on a vulnerable Pkcs 9.0.4; raise it for every consumer. -->
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Emberdrop.Storage.Relational/Emberdrop.Storage.Relational.csproj" />
+  </ItemGroup>
+
+</Project>

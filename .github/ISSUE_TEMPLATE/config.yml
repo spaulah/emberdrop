@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/spaulah/emberdrop/security/advisories/new
+    about: Please report security problems privately, not as a public issue. See SECURITY.md for what counts.
+  - name: Check the known limits first
+    url: https://github.com/spaulah/emberdrop/blob/main/docs/engineering/known-limits.md
+    about: Plugins not unloading, no sandbox, and similar behaviors are documented limits.

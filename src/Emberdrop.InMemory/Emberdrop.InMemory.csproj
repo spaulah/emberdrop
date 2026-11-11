@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/Emberdrop.Library.props" />
+
+  <ItemGroup>
+    <!-- The same cron parser Hangfire uses, so cron expressions mean the same thing in both engines. -->
+    <PackageReference Include="Cronos" Version="0.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Emberdrop.InMemory.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Emberdrop.Core/Emberdrop.Core.csproj" />
+  </ItemGroup>
+
+</Project>

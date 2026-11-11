@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture.behaviors",
+  "version": "2.0.0",
+  "entryAssemblies": [ "Fixture.Behaviors.dll" ],
+  "minAbstractionsVersion": "1.0.0",
+  "startup": "Fixture.Behaviors.Startup",
+  "workUnits": [
+    { "name": "gate", "type": "Fixture.Behaviors.GateWorkUnit" },
+    { "name": "stubborn", "type": "Fixture.Behaviors.StubbornWorkUnit" },
+    { "name": "count", "type": "Fixture.Behaviors.CountWorkUnit", "triggers": [ { "kind": "recurring", "cron": "0 2 * * *" } ] },
+    { "name": "static-event", "type": "Fixture.Behaviors.StaticEventWorkUnit" },
+    { "name": "thread", "type": "Fixture.Behaviors.ThreadWorkUnit" },
+    { "name": "fail", "type": "Fixture.Behaviors.FailWorkUnit" },
+    { "name": "service", "type": "Fixture.Behaviors.ServiceWorkUnit", "triggers": [ { "kind": "recurring", "cron": "0 3 * * *" } ], "requiredConfiguration": [ "Fixture:Setting" ] },
+    { "name": "echo", "type": "Fixture.Behaviors.EchoWorkUnit", "description": "Echoes a greeting", "inputType": "Fixture.Behaviors.EchoInput", "outputType": "Fixture.Behaviors.EchoOutput",
+      "triggers": [ { "kind": "manual" }, { "kind": "recurring", "cron": "30 4 * * *" } ], "capabilities": [ "network:smtp" ] },
+    { "name": "reports-failure", "type": "Fixture.Behaviors.ReportsFailureWorkUnit" },
+    { "name": "schema2", "type": "Fixture.Behaviors.SchemaTwoWorkUnit", "inputSchemaVersion": 2 }
+  ]
+}

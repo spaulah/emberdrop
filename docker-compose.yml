@@ -1,0 +1,49 @@
+# Optional SQL Server for local development. The default quick start (SQLite + in-memory scheduler)
+# needs none of it, so a plain `docker compose up` starts nothing.
+#
+#   SQL Server:   docker compose --profile sqlserver up -d
+#
+# These services never run the Emberdrop server itself.
+
+# MSSQL_SA_PASSWORD comes from .env. SQL Server itself refuses to start with an empty or weak password and says so in its log.
+
+services:
+  mssql:
+    profiles: ["sqlserver"]
+    # SQL Server 2022 replaces the retired Azure SQL Edge image. It is amd64-only, so on Apple Silicon
+    # Docker runs it under emulation (enable Rosetta in Docker Desktop for acceptable speed).
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: emberdrop-mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-}
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  # One-shot: creates the Emberdrop database, because Emberdrop creates tables but not databases.
+  mssql-init:
+    profiles: ["sqlserver"]
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    depends_on:
+      mssql:
+        condition: service_healthy
+    environment:
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-}
+    command: >
+      /bin/bash -c '/opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P "$$MSSQL_SA_PASSWORD"
+      -Q "IF DB_ID(N'"'"'Emberdrop'"'"') IS NULL CREATE DATABASE Emberdrop"'
+    restart: "no"
+
+volumes:
+  mssql-data:

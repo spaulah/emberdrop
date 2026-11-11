@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    # tests/Fixtures is left out on purpose: the plugin fixtures pin exact library versions so the
+    # shared-assembly and version-conflict tests mean something. Bump them by hand, with the host.
+    directories:
+      - "/src/*"
+      - "/tests/*"
+      - "/SamplePlugin"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      nuget-minor-and-patch:
+        update-types: ["minor", "patch"]
+    ignore:
+      # These are the contract between host and plugins (see docs/adr/0003-shared-assembly-policy.md).
+      # Move to a new major version deliberately, together with the target framework.
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      actions:
+        patterns: ["*"]

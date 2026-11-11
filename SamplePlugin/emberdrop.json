@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "sample-plugin",
+  "version": "1.0.0",
+  "description": "Two small work units that show how a plugin is packaged: one recurring, one manual with typed input and output.",
+  "entryAssemblies": [ "SamplePlugin.dll" ],
+  "minAbstractionsVersion": "1.0.0",
+  "workUnits": [
+    {
+      "name": "heartbeat",
+      "type": "SamplePlugin.HeartbeatWorkUnit",
+      "description": "Logs a heartbeat every 15 minutes.",
+      "triggers": [ { "kind": "recurring", "cron": "*/15 * * * *" } ]
+    },
+    {
+      "name": "greet",
+      "type": "SamplePlugin.GreetWorkUnit",
+      "description": "Greets someone by name. Start it with POST /api/work-units/{id}/executions.",
+      "inputType": "SamplePlugin.GreetInput",
+      "outputType": "SamplePlugin.GreetOutput",
+      "triggers": [ { "kind": "manual" } ]
+    }
+  ]
+}

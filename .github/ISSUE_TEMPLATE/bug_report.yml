@@ -1,0 +1,79 @@
+name: Bug report
+description: Something does not work the way the documentation says it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Please check [known limits](https://github.com/spaulah/emberdrop/blob/main/docs/engineering/known-limits.md) first: some behaviors, such as a plugin that pins its own load context, are documented limits and not bugs.
+        Security problems go through [private reporting](https://github.com/spaulah/emberdrop/security/advisories/new), not here.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Plugin hosting (load, unload, draining, lifecycle)
+        - Installer (file watcher, extraction, quarantine, rollback)
+        - Work units (discovery, registration, version binding, schedules)
+        - Scheduler provider (in-memory, Hangfire)
+        - Storage provider (SQLite, SQL Server)
+        - REST API
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected to see instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps, ideally from a clean checkout. For a plugin problem, include the plugin's `emberdrop.json` and, if you can, a minimal plugin that shows it.
+      placeholder: |
+        1. dotnet run ...
+        2. drop package ...
+        3. GET /api/plugins ...
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Logs and diagnostics
+      description: |
+        The relevant log lines. For a plugin that will not unload or is stuck draining, also paste the output of `GET /api/plugins` and `GET /api/plugins/{id}/{version}/report`.
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Emberdrop version
+      description: A commit hash from `git rev-parse --short HEAD`, or a release tag.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system and `dotnet --version`.
+      placeholder: macOS 15, .NET SDK 10.0.x
+    validations:
+      required: true
+  - type: input
+    id: providers
+    attributes:
+      label: Scheduler and store
+      description: The `Emberdrop:Scheduler` and `Emberdrop:Store` settings in use.
+      placeholder: InMemory and Sqlite (the defaults)
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked the known limits and this is not a documented limitation.
+          required: true
+        - label: This is not a security vulnerability (those go through private reporting).
+          required: true

@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FluentAssertions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Emberdrop.Core\Emberdrop.Core.csproj" />
+    <ProjectReference Include="..\..\src\Emberdrop.InMemory\Emberdrop.InMemory.csproj" />
+    <!-- The host side of the shared contract and of the dependency conflict: the host has version 1. -->
+    <ProjectReference Include="..\Fixtures\Fixture.Contracts\Fixture.Contracts.csproj" />
+    <ProjectReference Include="..\Fixtures\Fixture.Conflict.V1\Fixture.Conflict.V1.csproj" />
+  </ItemGroup>
+
+  <!-- Plugin fixtures: real class libraries, built with this project and published as plugin folders under fixtures/. -->
+  <ItemGroup>
+    <PluginFixture Include="..\Fixtures\Fixture.Hello.V1\Fixture.Hello.V1.csproj" Folder="hello-v1" />
+    <PluginFixture Include="..\Fixtures\Fixture.Hello.V2\Fixture.Hello.V2.csproj" Folder="hello-v2" />
+    <PluginFixture Include="..\Fixtures\Fixture.Behaviors.V1\Fixture.Behaviors.V1.csproj" Folder="behaviors-v1" />
+    <PluginFixture Include="..\Fixtures\Fixture.Behaviors.V2\Fixture.Behaviors.V2.csproj" Folder="behaviors-v2" />
+    <PluginFixture Include="..\Fixtures\Fixture.Fragile.V1\Fixture.Fragile.V1.csproj" Folder="fragile-v1" />
+    <PluginFixture Include="..\Fixtures\Fixture.Fragile.V2\Fixture.Fragile.V2.csproj" Folder="fragile-v2" />
+    <PluginFixture Include="..\Fixtures\Fixture.UsesConflict\Fixture.UsesConflict.csproj" Folder="uses-conflict" />
+    <ProjectReference Include="@(PluginFixture)" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <Target Name="PublishPluginFixtures" AfterTargets="Build">
+    <MSBuild Projects="@(PluginFixture)"
+             Targets="Publish"
+             Properties="NoBuild=true;Configuration=$(Configuration);PublishDir=$(MSBuildProjectDirectory)/$(OutDir)fixtures/%(PluginFixture.Folder)/" />
+  </Target>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Copies the plugin's NuGet dependencies next to it (a class library otherwise would not), so they travel in the package. -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- A dependency of the plugin's own. The host does not have it; it is packaged with the plugin and loaded only for it. -->
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../src/Emberdrop.Abstractions/Emberdrop.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="emberdrop.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CreateEmberdropPackage" AfterTargets="Build">
+    <ItemGroup>
+      <FilesToZip Include="$(OutputPath)**/*" />
+    </ItemGroup>
+    
+    <PropertyGroup>
+      <EmberdropFileName>$(AssemblyName).emberdrop</EmberdropFileName>
+      <!-- Where the package goes: the watched folder, unless -p:EmberdropPackageDirectory=... says otherwise. -->
+      <EmberdropPackageDirectory Condition="'$(EmberdropPackageDirectory)' == ''">$(MSBuildProjectDirectory)/../watched-plugins</EmberdropPackageDirectory>
+      <EmberdropOutputPath>$(EmberdropPackageDirectory)/$(EmberdropFileName)</EmberdropOutputPath>
+    </PropertyGroup>
+    
+    <Delete Files="$(EmberdropOutputPath)" Condition="Exists('$(EmberdropOutputPath)')" />
+    <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(EmberdropOutputPath)" />
+    
+    <Message Text="Created plugin package: $(EmberdropOutputPath)" Importance="high" />
+  </Target>
+
+</Project>
